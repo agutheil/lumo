@@ -8,46 +8,19 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
-public class CustomerTest {
-	Customer customer;
-	Shop shop;
-	boolean getNextCartWasCalled;
-	Set<String> articlesAskedFor;
-	Set<String> articlesAddedToCart;
+public class CustomerTest implements DummyShopObserver{
+	private Customer customer;
+	private Shop shop;
+	public Set<String> articlesAskedFor;
+	public Set<String> articlesAddedToCart;
+	public boolean getNextCartWasCalled;
 
 	@Before
 	public void setUp() throws Exception {
 		articlesAskedFor = new HashSet<String>();
 		articlesAddedToCart = new HashSet<String>();
 		getNextCartWasCalled = false;
-		shop = new Shop() {
-			
-			@Override
-			public Cart getNextCart() {
-				getNextCartWasCalled = true;
-				return new Cart() {
-					
-					@Override
-					public Set<Article> getArticles() {
-						// TODO Auto-generated method stub
-						return null;
-					}
-					
-					@Override
-					public void addArticle(Article article) {
-						articlesAddedToCart.add(article.getName());
-						
-					}
-				};
-			}
-			
-			@Override
-			public Article getArticleByName(String name) {
-				articlesAskedFor.add(name);
-				return new Article(name);
-			}
-		};
-		
+		shop = new DummyShop(this);
 		customer = new DefaultCustomer(shop);
 	}
 
@@ -82,4 +55,18 @@ public class CustomerTest {
 		
 	}
 
+	@Override
+	public void getNextCartWasCalled(boolean wasCalled){
+		getNextCartWasCalled = wasCalled;
+	}
+
+	@Override
+	public void articlesAskedFor(String articleName){
+		articlesAskedFor.add(articleName);
+	}
+	
+	@Override
+	public void articlesAddedToCart(String articleName){
+		articlesAddedToCart.add(articleName);
+	}
 }
