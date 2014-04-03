@@ -23,7 +23,7 @@ public class DefaultCustomer implements Customer {
 	 * @see de.agutheil.lumo.Customer#picksCartFromShop()
 	 */
 	@Override
-	public void picksCartFromShop() {
+	public void pickCartFromShop() {
 		cart = shop.getNextCart();
 	}
 
@@ -34,6 +34,12 @@ public class DefaultCustomer implements Customer {
 	public void pickArticleByNameAndAddToCart(String name) {
 		Article article = shop.getArticleByName(name);
 		cart.addArticle(article);
+		
+	}
+
+	@Override
+	public void proceedToCheckOut() {
+		// TODO Auto-generated method stub
 		
 	}
 

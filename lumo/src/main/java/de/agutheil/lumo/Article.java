@@ -32,6 +32,9 @@ public class Article {
 			return false;
 		return true;
 	}
+	public String getName() {
+		return name;
+	}
 	
 	
 

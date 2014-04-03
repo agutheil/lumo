@@ -37,13 +37,13 @@ public class DomTest {
 	
 	@Test
 	public void thatCustomerPicksACart() {
-		customer.picksCartFromShop();
+		customer.pickCartFromShop();
 		assertNotNull(customer.getCart());
 	}
 	
 	@Test
 	public void thatCustomerAddsArticleToCart() {
-		customer.picksCartFromShop();
+		customer.pickCartFromShop();
 		customer.pickArticleByNameAndAddToCart("Guiness");
 		customer.pickArticleByNameAndAddToCart("Jever");
 		customer.pickArticleByNameAndAddToCart("Becks");
