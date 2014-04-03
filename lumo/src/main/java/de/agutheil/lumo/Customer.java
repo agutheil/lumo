@@ -7,7 +7,5 @@ public interface Customer {
 	public abstract void pickCartFromShop();
 
 	public abstract void pickArticleByNameAndAddToCart(String name);
-	
-	public abstract void proceedToCheckOut();
 
 }

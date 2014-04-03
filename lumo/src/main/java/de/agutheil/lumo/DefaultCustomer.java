@@ -37,10 +37,4 @@ public class DefaultCustomer implements Customer {
 		
 	}
 
-	@Override
-	public void proceedToCheckOut() {
-		// TODO Auto-generated method stub
-		
-	}
-
 }

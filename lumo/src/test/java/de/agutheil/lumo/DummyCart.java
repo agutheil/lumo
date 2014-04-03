@@ -17,8 +17,7 @@ public final class DummyCart implements Cart {
 
 	@Override
 	public Set<Article> getArticles() {
-		// TODO Auto-generated method stub
-		return null;
+		return observer.getArticles();
 	}
 
 	@Override

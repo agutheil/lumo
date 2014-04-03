@@ -69,4 +69,10 @@ public class CustomerTest implements DummyShopObserver{
 	public void articlesAddedToCart(String articleName){
 		articlesAddedToCart.add(articleName);
 	}
+
+	@Override
+	public Set<Article> getArticles() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
