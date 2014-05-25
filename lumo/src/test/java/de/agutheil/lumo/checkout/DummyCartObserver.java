@@ -1,6 +1,8 @@
-package de.agutheil.lumo;
+package de.agutheil.lumo.checkout;
 
 import java.util.Set;
+
+import de.agutheil.lumo.Article;
 
 public interface DummyCartObserver {
 

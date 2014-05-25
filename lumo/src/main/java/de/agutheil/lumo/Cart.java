@@ -8,4 +8,6 @@ public interface Cart {
 
 	public abstract void addArticle(Article article);
 
+	public abstract boolean isEmpty();
+
 }
