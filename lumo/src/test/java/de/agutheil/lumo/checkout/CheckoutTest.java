@@ -5,19 +5,20 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.agutheil.lumo.Article;
 import de.agutheil.lumo.Cart;
 
 public class CheckoutTest {
 
 	Checkout checkout;
 	Cart cart;
-	DummyCartValidator dummyCartValidator;
+	DummyCartValidator cartValidator;
+	DummyPaymentProvider paymentProvider;
 	
 	@Before
 	public void setUp() throws Exception {
-		dummyCartValidator = new DummyCartValidator();
-		checkout = new DefaultCheckout(new DummyBillFactory(), dummyCartValidator);
+		cartValidator = new DummyCartValidator();
+		paymentProvider = new DummyPaymentProvider();
+		checkout = new DefaultCheckout(new DummyBillFactory(), cartValidator, paymentProvider);
 		cart = new DummyCart();
 	}
 
@@ -32,6 +33,11 @@ public class CheckoutTest {
 		assertFalse(checkout.isStarted());
 	}
 	
+	@Test
+	public void thatNoBillWasCreatedWhithoutCallingCreateBill() {
+		assertFalse(checkout.billIsCreated());
+	}
+	
 	@Test(expected=CheckoutNotStartedException.class)
 	public void thatExceptionIsThrownWhenValidationIsCalledWithoutAddingACart() {
 		checkout.validate();
@@ -39,14 +45,14 @@ public class CheckoutTest {
 	
 	@Test(expected=ValidateCartException.class)
 	public void thatExceptionIsThrownWhenCartCannotBeValidated() {
-		dummyCartValidator.setThrowException(true);
+		cartValidator.setThrowException(true);
 		checkout.take(cart);
 		checkout.validate();
 	}
 	
 	@Test
 	public void thatCartIsValidatedByCheckoutForValidCart() {
-		dummyCartValidator.setValid(true);
+		cartValidator.setValid(true);
 		checkout.take(cart);
 		checkout.validate();
 		assertTrue(checkout.cartIsValid());
@@ -54,8 +60,8 @@ public class CheckoutTest {
 
 	@Test
 	public void thatBillIsCreatedForValidCart() {
-		dummyCartValidator.setThrowException(false);
-		dummyCartValidator.setValid(true);
+		cartValidator.setThrowException(false);
+		cartValidator.setValid(true);
 		checkout.take(cart);
 		checkout.validate();
 		checkout.createBill();
@@ -75,7 +81,7 @@ public class CheckoutTest {
 	
 	@Test(expected=BillCreationException.class)
 	public void thatBillIsNotCreatedWhenCartWasInvalid() {
-		dummyCartValidator.setThrowException(true);
+		cartValidator.setThrowException(true);
 		checkout.take(cart);
 		try {
 			checkout.validate();
@@ -92,8 +98,8 @@ public class CheckoutTest {
 	
 	@Test
 	public void thatBillIsReturnedWhenCreateBillIsCalled() {
-		dummyCartValidator.setThrowException(false);
-		dummyCartValidator.setValid(true);
+		cartValidator.setThrowException(false);
+		cartValidator.setValid(true);
 		checkout.take(cart);
 		checkout.validate();
 		checkout.createBill();
@@ -104,6 +110,34 @@ public class CheckoutTest {
 	public void thatCheckoutTakesOnlyOneCart() {
 		checkout.take(cart);
 		checkout.take(cart);
+	}
+	
+	@Test
+	public void thatBillIsPayed() {
+		cartValidator.setThrowException(false);
+		cartValidator.setValid(true);
+		paymentProvider.setPayed(true);
+		checkout.take(cart);
+		checkout.validate();
+		checkout.createBill();
+		checkout.payBill();
+		assertTrue(checkout.billIsPayed());
+	}
+	
+	@Test(expected=NoBillCreatedException.class)
+	public void thatExceptionIsThrownWhilePayingWhenNoBillWasCreated() {
+		checkout.payBill();
+	}
+	
+	@Test(expected=PaymentException.class)
+	public void thatPaymentExceptionIsThrownThroughCheckout() {
+		cartValidator.setThrowException(false);
+		cartValidator.setValid(true);
+		paymentProvider.setThrowException(true);
+		checkout.take(cart);
+		checkout.validate();
+		checkout.createBill();
+		checkout.payBill();
 	}
 	
 }

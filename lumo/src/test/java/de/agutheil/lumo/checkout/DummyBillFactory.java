@@ -6,8 +6,7 @@ public class DummyBillFactory implements BillFactory {
 
 	@Override
 	public Bill createBill(Checkout checkout) {
-		return new Bill() {
-		};
+		return new DummyBill();
 	}
 
 }

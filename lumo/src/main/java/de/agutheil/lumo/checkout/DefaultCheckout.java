@@ -6,17 +6,17 @@ import de.agutheil.lumo.Cart;
 public class DefaultCheckout implements Checkout {
 	private BillFactory billFactory;
 	private CartValidator cartValidator;
+	private PaymentProvider paymentProvider;
 	private Bill bill;
-	private boolean billCreated;
 	private Cart cart;
 	private boolean cartValid;
 	private boolean started;
-	public DefaultCheckout(BillFactory billFactory, CartValidator cartValidator) {
+	public DefaultCheckout(BillFactory billFactory, CartValidator cartValidator, PaymentProvider paymentProvider) {
 		super();
 		cartValid = false;
-		billCreated = false;
 		this.billFactory = billFactory;
 		this.cartValidator = cartValidator;
+		this.paymentProvider = paymentProvider;
 	}
 
 	@Override
@@ -47,12 +47,11 @@ public class DefaultCheckout implements Checkout {
 			throw new BillCreationException();
 		}
 		bill = billFactory.createBill(this);
-		billCreated = true;
 	}
 
 	@Override
 	public boolean billIsCreated() {
-		return billCreated;
+		return bill != null;
 	}
 
 	@Override
@@ -63,6 +62,19 @@ public class DefaultCheckout implements Checkout {
 	@Override
 	public Bill getBill() {
 		return bill;
+	}
+
+	@Override
+	public void payBill() throws NoBillCreatedException, PaymentException {
+		if (bill == null) {
+			throw new NoBillCreatedException();
+		}
+		bill = paymentProvider.pay(bill);
+	}
+
+	@Override
+	public boolean billIsPayed() {
+		return bill.isPayed();
 	}
 
 }

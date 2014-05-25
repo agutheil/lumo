@@ -19,4 +19,8 @@ public interface Checkout {
 
 	Bill getBill();
 
+	void payBill() throws NoBillCreatedException, PaymentException;
+
+	boolean billIsPayed();
+
 }
