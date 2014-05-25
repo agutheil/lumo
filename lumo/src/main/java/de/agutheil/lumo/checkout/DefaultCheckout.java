@@ -1,13 +1,16 @@
 package de.agutheil.lumo.checkout;
 
+import de.agutheil.lumo.Bill;
 import de.agutheil.lumo.Cart;
 
 public class DefaultCheckout implements Checkout {
 	private Cart cart;
 	private boolean cartValidated;
-	public DefaultCheckout() {
+	private BillFactory billFactory;
+	public DefaultCheckout(BillFactory billFactory) {
 		super();
 		cartValidated = false;
+		this.billFactory = billFactory;
 	}
 
 	@Override
@@ -33,6 +36,14 @@ public class DefaultCheckout implements Checkout {
 	@Override
 	public boolean cartIsValidated() {
 		return cartValidated;
+	}
+
+	@Override
+	public Bill createBill() {
+		if (!cartValidated){
+			throw new BillCreationException();
+		}
+		return billFactory.createBill(this);
 	}
 
 }

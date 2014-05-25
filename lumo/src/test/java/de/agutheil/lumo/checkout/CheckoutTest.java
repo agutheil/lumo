@@ -19,7 +19,7 @@ public class CheckoutTest implements DummyCartObserver{
 	
 	@Before
 	public void setUp() throws Exception {
-		checkout = new DefaultCheckout();
+		checkout = new DefaultCheckout(new DummyBillFactory());
 		articles = new HashSet<Article>();
 	}
 
@@ -46,6 +46,34 @@ public class CheckoutTest implements DummyCartObserver{
 		assertTrue(checkout.cartIsValidated());
 	}
 
+	@Test
+	public void thatBillIsCreatedForValidCart() {
+		cart = new DummyCart(this);
+		cart.addArticle(new Article("Test"));
+		checkout.take(cart);
+		checkout.validate();
+		assertNotNull(checkout.createBill());
+	}
+	
+	@Test(expected=BillCreationException.class)
+	public void thatBillIsNotCreatedWhenValidationWasntCalled() {
+		cart = new DummyCart(this);
+		checkout.take(cart);
+		checkout.createBill();
+	}
+	
+	@Test(expected=BillCreationException.class)
+	public void thatBillIsNotCreatedWhenCartWasInvalid(){
+		cart = new DummyCart(this);
+		checkout.take(cart);
+		try {
+			checkout.validate();
+		} catch (ValidateCartException e) {
+			// We expected this error. 
+		}
+		checkout.createBill();
+	}
+	
 	@Override
 	public void articlesAddedToCart(Article article) {
 		articles.add(article);

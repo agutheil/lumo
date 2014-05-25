@@ -1,5 +1,6 @@
 package de.agutheil.lumo.checkout;
 
+import de.agutheil.lumo.Bill;
 import de.agutheil.lumo.Cart;
 
 public interface Checkout {
@@ -11,5 +12,7 @@ public interface Checkout {
 	void validate();
 
 	boolean cartIsValidated();
+
+	Bill createBill();
 
 }
