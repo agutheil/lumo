@@ -20,7 +20,10 @@ public class DefaultCheckout implements Checkout {
 	}
 
 	@Override
-	public void take(Cart cart) {
+	public void take(Cart cart) throws OneCartPerCheckoutException{
+		if (started) {
+			throw new OneCartPerCheckoutException();
+		}
 		this.cart = cart;
 		started = true;
 	}

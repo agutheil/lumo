@@ -5,7 +5,7 @@ import de.agutheil.lumo.Cart;
 
 public interface Checkout {
 
-	void take(Cart cart);
+	void take(Cart cart) throws OneCartPerCheckoutException;
 
 	void validate() throws ValidateCartException, CheckoutNotStartedException;
 

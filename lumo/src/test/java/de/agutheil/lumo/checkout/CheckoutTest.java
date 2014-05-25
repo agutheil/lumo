@@ -99,4 +99,11 @@ public class CheckoutTest {
 		checkout.createBill();
 		assertNotNull(checkout.getBill());
 	}
+	
+	@Test(expected=OneCartPerCheckoutException.class)
+	public void thatCheckoutTakesOnlyOneCart() {
+		checkout.take(cart);
+		checkout.take(cart);
+	}
+	
 }
