@@ -7,9 +7,12 @@ public class DefaultCheckout implements Checkout {
 	private Cart cart;
 	private boolean cartValidated;
 	private BillFactory billFactory;
+	private Bill bill;
+	private boolean billCreated;
 	public DefaultCheckout(BillFactory billFactory) {
 		super();
 		cartValidated = false;
+		billCreated = false;
 		this.billFactory = billFactory;
 	}
 
@@ -39,11 +42,17 @@ public class DefaultCheckout implements Checkout {
 	}
 
 	@Override
-	public Bill createBill() {
+	public void createBill() {
 		if (!cartValidated){
 			throw new BillCreationException();
 		}
-		return billFactory.createBill(this);
+		bill = billFactory.createBill(this);
+		billCreated = true;
+	}
+
+	@Override
+	public boolean billIsCreated() {
+		return billCreated;
 	}
 
 }

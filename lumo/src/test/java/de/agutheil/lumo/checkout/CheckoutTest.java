@@ -35,6 +35,7 @@ public class CheckoutTest implements DummyCartObserver{
 		cart = new DummyCart(this);
 		checkout.take(cart);
 		checkout.validate();
+		assertFalse(checkout.cartIsValidated());
 	}
 	
 	@Test
@@ -52,7 +53,8 @@ public class CheckoutTest implements DummyCartObserver{
 		cart.addArticle(new Article("Test"));
 		checkout.take(cart);
 		checkout.validate();
-		assertNotNull(checkout.createBill());
+		checkout.createBill();
+		assertTrue(checkout.billIsCreated());
 	}
 	
 	@Test(expected=BillCreationException.class)
@@ -60,6 +62,7 @@ public class CheckoutTest implements DummyCartObserver{
 		cart = new DummyCart(this);
 		checkout.take(cart);
 		checkout.createBill();
+		assertFalse(checkout.billIsCreated());
 	}
 	
 	@Test(expected=BillCreationException.class)

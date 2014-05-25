@@ -13,6 +13,8 @@ public interface Checkout {
 
 	boolean cartIsValidated();
 
-	Bill createBill();
+	void createBill();
+
+	boolean billIsCreated();
 
 }
