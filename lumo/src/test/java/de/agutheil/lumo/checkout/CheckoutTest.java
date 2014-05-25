@@ -36,10 +36,19 @@ public class CheckoutTest implements DummyCartObserver{
 		checkout.take(cart);
 		checkout.validate();
 	}
+	
+	@Test
+	public void thatCartIsValidatedByCheckoutWhenItIsNotEmpty() {
+		cart = new DummyCart(this);
+		cart.addArticle(new Article("Test"));
+		checkout.take(cart);
+		checkout.validate();
+		assertTrue(checkout.cartIsValidated());
+	}
 
 	@Override
-	public void articlesAddedToCart(String articleName) {
-		// TODO Auto-generated method stub
+	public void articlesAddedToCart(Article article) {
+		articles.add(article);
 		
 	}
 

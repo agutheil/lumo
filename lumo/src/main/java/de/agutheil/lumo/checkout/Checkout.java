@@ -10,4 +10,6 @@ public interface Checkout {
 
 	void validate();
 
+	boolean cartIsValidated();
+
 }

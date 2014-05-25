@@ -6,7 +6,7 @@ import de.agutheil.lumo.Article;
 
 public interface DummyCartObserver {
 
-	public abstract void articlesAddedToCart(String articleName);
+	public abstract void articlesAddedToCart(Article article);
 
 	public abstract Set<Article> getArticles();
 

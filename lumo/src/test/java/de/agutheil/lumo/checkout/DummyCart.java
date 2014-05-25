@@ -25,7 +25,7 @@ public final class DummyCart implements Cart {
 
 	@Override
 	public void addArticle(Article article) {
-		observer.articlesAddedToCart(article.getName());
+		observer.articlesAddedToCart(article);
 		
 	}
 
