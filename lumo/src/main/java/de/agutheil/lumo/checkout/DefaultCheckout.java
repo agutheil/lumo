@@ -60,11 +60,6 @@ public class DefaultCheckout implements Checkout {
 	}
 
 	@Override
-	public Bill getBill() {
-		return bill;
-	}
-
-	@Override
 	public void payBill() throws NoBillCreatedException, PaymentException {
 		if (bill == null) {
 			throw new NoBillCreatedException();
