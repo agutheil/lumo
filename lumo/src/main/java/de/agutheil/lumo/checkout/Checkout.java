@@ -6,8 +6,6 @@ public interface Checkout {
 
 	void take(Cart cart);
 
-	Cart currentCart();
-
 	void validate() throws ValidateCartException;
 
 	boolean cartIsValidated();
@@ -15,5 +13,7 @@ public interface Checkout {
 	void createBill() throws BillCreationException;
 
 	boolean billIsCreated();
+
+	boolean isStarted();
 
 }

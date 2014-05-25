@@ -6,6 +6,7 @@ import de.agutheil.lumo.Cart;
 public class DefaultCheckout implements Checkout {
 	private Cart cart;
 	private boolean cartValidated;
+	private boolean started;
 	private BillFactory billFactory;
 	private Bill bill;
 	private boolean billCreated;
@@ -21,11 +22,7 @@ public class DefaultCheckout implements Checkout {
 	@Override
 	public void take(Cart cart) {
 		this.cart = cart;
-	}
-
-	@Override
-	public Cart currentCart() {
-		return cart;
+		started = true;
 	}
 
 	@Override
@@ -51,6 +48,11 @@ public class DefaultCheckout implements Checkout {
 	@Override
 	public boolean billIsCreated() {
 		return billCreated;
+	}
+
+	@Override
+	public boolean isStarted() {
+		return started;
 	}
 
 }

@@ -5,32 +5,21 @@ import java.util.Set;
 import de.agutheil.lumo.Article;
 import de.agutheil.lumo.Cart;
 
-public final class DummyCart implements Cart {
-	/**
-	 * 
-	 */
-	private DummyCartObserver observer;
-
-	/**
-	 * @param dummyShop
-	 */
-	DummyCart(DummyCartObserver observer) {
-		this.observer = observer;
-	}
+public class DummyCart implements Cart {
 
 	@Override
 	public Set<Article> getArticles() {
-		return observer.getArticles();
+		return null;
 	}
 
 	@Override
 	public void addArticle(Article article) {
-		observer.articlesAddedToCart(article);
 		
 	}
 
 	@Override
 	public boolean isEmpty() {
-		return observer.getArticles().isEmpty();
+		return false;
 	}
+
 }
