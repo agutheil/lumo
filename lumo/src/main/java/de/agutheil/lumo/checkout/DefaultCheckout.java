@@ -9,11 +9,13 @@ public class DefaultCheckout implements Checkout {
 	private BillFactory billFactory;
 	private Bill bill;
 	private boolean billCreated;
-	public DefaultCheckout(BillFactory billFactory) {
+	private CartValidator cartValidator;
+	public DefaultCheckout(BillFactory billFactory, CartValidator cartValidator) {
 		super();
 		cartValidated = false;
 		billCreated = false;
 		this.billFactory = billFactory;
+		this.cartValidator = cartValidator;
 	}
 
 	@Override
@@ -27,13 +29,9 @@ public class DefaultCheckout implements Checkout {
 	}
 
 	@Override
-	public void validate() {
-		if (cart.isEmpty()){
-			throw new ValidateCartException();
-		} else {
-			cartValidated = true;
-		}
-		
+	public void validate() throws ValidateCartException{
+		cartValidator.validate(cart);
+		cartValidated = true;
 	}
 
 	@Override
@@ -42,7 +40,7 @@ public class DefaultCheckout implements Checkout {
 	}
 
 	@Override
-	public void createBill() {
+	public void createBill() throws BillCreationException{
 		if (!cartValidated){
 			throw new BillCreationException();
 		}

@@ -16,10 +16,12 @@ public class CheckoutTest implements DummyCartObserver{
 	Checkout checkout;
 	Cart cart;
 	Set<Article> articles;
+	DummyCartValidator dummyCartValidator;
 	
 	@Before
 	public void setUp() throws Exception {
-		checkout = new DefaultCheckout(new DummyBillFactory());
+		dummyCartValidator = new DummyCartValidator();
+		checkout = new DefaultCheckout(new DummyBillFactory(), dummyCartValidator);
 		articles = new HashSet<Article>();
 	}
 
@@ -31,11 +33,11 @@ public class CheckoutTest implements DummyCartObserver{
 	}
 	
 	@Test(expected=ValidateCartException.class)
-	public void thatCartIsNotValidatedByCheckoutWhenEmpty() {
+	public void thatExceptionIsThrownWhenCartCannotBeValidated() {
+		dummyCartValidator.setThrowException(true);
 		cart = new DummyCart(this);
 		checkout.take(cart);
 		checkout.validate();
-		assertFalse(checkout.cartIsValidated());
 	}
 	
 	@Test
@@ -62,11 +64,11 @@ public class CheckoutTest implements DummyCartObserver{
 		cart = new DummyCart(this);
 		checkout.take(cart);
 		checkout.createBill();
-		assertFalse(checkout.billIsCreated());
 	}
 	
 	@Test(expected=BillCreationException.class)
 	public void thatBillIsNotCreatedWhenCartWasInvalid(){
+		dummyCartValidator.setThrowException(true);
 		cart = new DummyCart(this);
 		checkout.take(cart);
 		try {
