@@ -45,11 +45,11 @@ public class CheckoutTest {
 	}
 	
 	@Test
-	public void thatCartIsValidatedByCheckoutWhenItIsNotEmpty() {
-		cart.addArticle(new Article("Test"));
+	public void thatCartIsValidatedByCheckoutForValidCart() {
+		dummyCartValidator.setValid(true);
 		checkout.take(cart);
 		checkout.validate();
-		assertTrue(checkout.cartIsValidated());
+		assertTrue(checkout.cartIsValid());
 	}
 
 	@Test

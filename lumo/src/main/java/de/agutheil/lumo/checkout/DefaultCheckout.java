@@ -9,11 +9,11 @@ public class DefaultCheckout implements Checkout {
 	private Bill bill;
 	private boolean billCreated;
 	private Cart cart;
-	private boolean cartValidated;
+	private boolean cartValid;
 	private boolean started;
 	public DefaultCheckout(BillFactory billFactory, CartValidator cartValidator) {
 		super();
-		cartValidated = false;
+		cartValid = false;
 		billCreated = false;
 		this.billFactory = billFactory;
 		this.cartValidator = cartValidator;
@@ -33,18 +33,17 @@ public class DefaultCheckout implements Checkout {
 		if (!isStarted()) {
 			throw new CheckoutNotStartedException();
 		}
-		cartValidator.validate(cart);
-		cartValidated = true;
+		cartValid = cartValidator.validate(cart);
 	}
 
 	@Override
-	public boolean cartIsValidated() {
-		return cartValidated;
+	public boolean cartIsValid() {
+		return cartValid;
 	}
 
 	@Override
 	public void createBill() throws BillCreationException{
-		if (!cartValidated){
+		if (!cartValid){
 			throw new BillCreationException();
 		}
 		bill = billFactory.createBill(this);

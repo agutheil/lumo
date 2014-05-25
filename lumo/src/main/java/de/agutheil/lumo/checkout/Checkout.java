@@ -9,7 +9,7 @@ public interface Checkout {
 
 	void validate() throws ValidateCartException, CheckoutNotStartedException;
 
-	boolean cartIsValidated();
+	boolean cartIsValid();
 
 	void createBill() throws BillCreationException;
 
