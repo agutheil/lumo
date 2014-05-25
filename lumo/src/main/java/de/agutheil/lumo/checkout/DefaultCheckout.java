@@ -4,13 +4,13 @@ import de.agutheil.lumo.Bill;
 import de.agutheil.lumo.Cart;
 
 public class DefaultCheckout implements Checkout {
+	private BillFactory billFactory;
+	private CartValidator cartValidator;
+	private Bill bill;
+	private boolean billCreated;
 	private Cart cart;
 	private boolean cartValidated;
 	private boolean started;
-	private BillFactory billFactory;
-	private Bill bill;
-	private boolean billCreated;
-	private CartValidator cartValidator;
 	public DefaultCheckout(BillFactory billFactory, CartValidator cartValidator) {
 		super();
 		cartValidated = false;
@@ -56,6 +56,11 @@ public class DefaultCheckout implements Checkout {
 	@Override
 	public boolean isStarted() {
 		return started;
+	}
+
+	@Override
+	public Bill getBill() {
+		return bill;
 	}
 
 }

@@ -85,4 +85,18 @@ public class CheckoutTest {
 		checkout.createBill();
 	}
 
+	@Test
+	public void thatThereIsNoBillWhenNoBillIsCreated(){
+		assertNull(checkout.getBill());
+	}
+	
+	@Test
+	public void thatBillIsReturnedWhenCreateBillIsCalled() {
+		dummyCartValidator.setThrowException(false);
+		dummyCartValidator.setValid(true);
+		checkout.take(cart);
+		checkout.validate();
+		checkout.createBill();
+		assertNotNull(checkout.getBill());
+	}
 }
