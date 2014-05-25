@@ -26,7 +26,10 @@ public class DefaultCheckout implements Checkout {
 	}
 
 	@Override
-	public void validate() throws ValidateCartException{
+	public void validate() throws ValidateCartException, CheckoutNotStartedException{
+		if (!isStarted()) {
+			throw new CheckoutNotStartedException();
+		}
 		cartValidator.validate(cart);
 		cartValidated = true;
 	}

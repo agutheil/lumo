@@ -32,6 +32,11 @@ public class CheckoutTest {
 		assertFalse(checkout.isStarted());
 	}
 	
+	@Test(expected=CheckoutNotStartedException.class)
+	public void thatExceptionIsThrownWhenValidationIsCalledWithoutAddingACart() {
+		checkout.validate();
+	}
+	
 	@Test(expected=ValidateCartException.class)
 	public void thatExceptionIsThrownWhenCartCannotBeValidated() {
 		dummyCartValidator.setThrowException(true);
@@ -60,6 +65,11 @@ public class CheckoutTest {
 	@Test(expected=BillCreationException.class)
 	public void thatBillIsNotCreatedWhenValidationWasntCalled() {
 		checkout.take(cart);
+		checkout.createBill();
+	}
+	
+	@Test(expected=BillCreationException.class)
+	public void thatBillIsNotCreatedWhenNoCartWasAdded() {
 		checkout.createBill();
 	}
 	

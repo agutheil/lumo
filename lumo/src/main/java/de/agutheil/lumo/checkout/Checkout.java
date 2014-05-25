@@ -6,7 +6,7 @@ public interface Checkout {
 
 	void take(Cart cart);
 
-	void validate() throws ValidateCartException;
+	void validate() throws ValidateCartException, CheckoutNotStartedException;
 
 	boolean cartIsValidated();
 
